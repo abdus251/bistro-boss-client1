@@ -21,6 +21,9 @@ const handleValidateCapcha = () => {
    if(validateCaptcha(user_captcha_value)){
     setDisabled(false);
    }
+   else{
+    setDisabled(true)
+   }
 }
 
   return (
