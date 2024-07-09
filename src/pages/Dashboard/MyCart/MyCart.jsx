@@ -1,15 +1,15 @@
-import { Helmet } from 'react-helmet-async'
-import useCart from '../../../hooks/useCart'
+import { Helmet } from 'react-helmet-async';
+import useCart from '../../../hooks/useCart';
 import { FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
 const MyCart = () => {
     const [cart, refetch] = useCart();
-    console.log(cart)
-    // how does reduce word!!!
-    const total = cart.reduce((sum, item) => item.price + sum, 0)
+    console.log(cart);
 
-    const handleDelete = item =>  {
+    const total = cart.reduce((sum, item) => item.price + sum, 0);
+
+    const handleDelete = item => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -18,24 +18,32 @@ const MyCart = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              fetch(`http://localhost:5000/carts?/${item._id}`, {
-                method: 'DELETE'
-              })            
-              .then(res => res.json())
-              .then(data => {
-                if (data.deletedCount>0) {
-                    refetch();
-                    Swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
-                      "success"
-                    );
-                  }
-              })
+                fetch(`http://localhost:5000/carts/${item._id}`, {
+                    method: 'DELETE'
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.text().then(text => { throw new Error(text) });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.deletedCount > 0) {
+                        refetch();
+                        Swal.fire(
+                            "Deleted!",
+                            "Your item has been deleted.",
+                            "success"
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the delete operation:', error);
+                });
             }
-          });   
+        });
     }
 
     return (
@@ -62,33 +70,31 @@ const MyCart = () => {
                     </thead>
                     <tbody>
                         {
-                            cart.map((item, index) => <tr
-                                key={item._id}
-                            >
-                                <td>
-                                    {index + 1}
-                                </td>
-                                <td>
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle h-12 w-12">
-                                            <img src={item.image}alt="Avatar Tailwind CSS Component" />
+                            cart.map((item, index) => (
+                                <tr key={item._id}>
+                                    <td>{index + 1}</td>
+                                    <td>
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle h-12 w-12">
+                                                <img src={item.image} alt="Avatar Tailwind CSS Component" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    {item.name}
-                                </td>
-                                <td className='text-end'>${item.price}</td>
-                                <td>
-                                    <button onClick={()=>handleDelete(item)} className="btn btn-ghost bg-red-600 text-white "><FaTrashAlt></FaTrashAlt></button>
-                                </td>
-                            </tr>)
+                                    </td>
+                                    <td>{item.name}</td>
+                                    <td className='text-end'>${item.price}</td>
+                                    <td>
+                                        <button onClick={() => handleDelete(item)} className="btn btn-ghost bg-red-600 text-white">
+                                            <FaTrashAlt />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-    )
+    );
 }
 
-export default MyCart
+export default MyCart;
