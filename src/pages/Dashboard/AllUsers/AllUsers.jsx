@@ -2,19 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaTrashAlt, FaUserShield } from "react-icons/fa";
 import Swal from "sweetalert2";
-
-const fetchUsers = async () => {
-    const res = await fetch('http://localhost:5000/users');
-    if (!res.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return res.json();
-};
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AllUsers = () => {
+    const [axiosSecure] = useAxiosSecure();
     const { data: users = [], isLoading, isError, error, refetch } = useQuery({
         queryKey: ['users'],
-        queryFn: fetchUsers,
+        queryFn: async () => {
+            const res = await axiosSecure.get('/users');
+            return res.data;
+        }
     });
 
     if (isLoading) {

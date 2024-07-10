@@ -36,7 +36,7 @@ const Login = () => {
             popup: 'animate__animated animate__fadeOutDown animate__faster',
           },
         });
-        navigate(from, { replace: true });
+       
       })
       .catch((error) => {
         console.error(error);
@@ -95,7 +95,7 @@ const Login = () => {
               </div>
               <div className="form-control mt-6">
                 {/* TODO make button disable for captcha */}
-                <input disabled={disabled} className="btn btn-primary" type="submit" value="Login" />
+                <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
               </div>
             </form>
             <p><small>New here? <Link to="/signup">Create an account</Link></small></p>

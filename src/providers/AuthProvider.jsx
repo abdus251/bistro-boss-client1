@@ -35,11 +35,11 @@ const AuthProvider = ({ children }) => {
 
     const updateUserProfile = (name, photo) => {
         return updateProfile(auth.currentUser, {
-            displayName: name, photoURL: photo
+            displayName: name,
+            photoURL: photo
         });
     };
 
-    
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
@@ -47,17 +47,19 @@ const AuthProvider = ({ children }) => {
             
             // get and set token
             if(currentUser){
-              axios.post('http://localhost:5000/jwt', {email: currentUser.email})
-              .then(data =>{
+              axios.post('http://localhost:5000/jwt', { email: currentUser.email })
+              .then(data => {
                 // console.log(data.data.token)
-                localStorage.setItem('access-token', data.data.token)
+                localStorage.setItem('access-token', data.data.token);
+                setLoading(false);
               })
-            }
-            else{
-              localStorage.removeItem('accss-token')
+              .catch(error => {
+                console.error('Error getting token:', error);
+              });
+            } else {
+              localStorage.removeItem('access-token');
             }
             
-            setLoading(false);
         });
         return () => unsubscribe();
     }, []);
