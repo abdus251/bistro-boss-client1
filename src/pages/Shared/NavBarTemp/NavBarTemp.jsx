@@ -7,7 +7,7 @@ import useCart from "../../../hooks/useCart";
 const NavBarTemp = () => {
     const {user, logOut} = useContext(AuthContext);
     const [cart] = useCart();
-    const handleLogOut = () => {
+    const handlelogOut = () => {
         logOut()
         .then(() => { })
         .catch(error => console.log(error));
@@ -18,6 +18,7 @@ const NavBarTemp = () => {
         <li><Link to="/menu">Our Menu</Link></li>
         <li><Link to="/order/salad">Order Food</Link></li>
         <li><Link to="/secret">Secret</Link></li>
+        <li><Link to="/addItem2">Add Itme</Link></li>
         <li>
             <Link to="/dashboard/mycart">
                 <button className="btn gap-2">
@@ -29,7 +30,7 @@ const NavBarTemp = () => {
 
         {
             user ? <>
-            <button onClick={handleLogOut} className="btn btn-ghost">Log Out</button></>:<><li><Link to="/login">Login</Link></li>
+            <button onClick={handlelogOut} className="btn btn-ghost">Log Out</button></>:<><li><Link to="/login">Login</Link></li>
             </>
         }
         

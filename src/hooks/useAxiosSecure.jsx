@@ -1,15 +1,14 @@
-import {  useEffect } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
 
-
 const useAxiosSecure = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth;
+    const { logOut } = useAuth();  // Correctly call useAuth()
 
     const axiosSecure = axios.create({
-        baseURL: 'http://localhost:5000', // Replace with your base URL
+        baseURL: 'http://localhost:5000',
     });
 
     useEffect(() => {
@@ -30,7 +29,7 @@ const useAxiosSecure = () => {
             (response) => response,
             async (error) => {
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    await logout();
+                    await logOut();
                     navigate('/login', { replace: true });
                 }
                 return Promise.reject(error);
@@ -41,7 +40,7 @@ const useAxiosSecure = () => {
             axiosSecure.interceptors.request.eject(requestInterceptor);
             axiosSecure.interceptors.response.eject(responseInterceptor);
         };
-    }, [logout, navigate, axiosSecure]);
+    }, [logOut, navigate, axiosSecure]);
 
     return [axiosSecure];
 };

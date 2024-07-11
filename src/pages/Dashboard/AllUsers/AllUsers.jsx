@@ -23,10 +23,8 @@ const AllUsers = () => {
     }
 
     const handleMakeAdmin = (user) => {
-        fetch(`http://localhost:5000/users/admin/${user._id}`, {
-            method: 'PATCH',
-        })
-            .then(res => res.json())
+        axiosSecure.patch(`/users/admin/${user._id}`)
+            .then(res => res.data)
             .then(data => {
                 if (data.modifiedCount) {
                     refetch();
@@ -38,6 +36,14 @@ const AllUsers = () => {
                         timer: 1500,
                     });
                 }
+            })
+            .catch(error => {
+                console.error("Error making admin:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
             });
     };
 
