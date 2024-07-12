@@ -18,7 +18,6 @@ const NavBarTemp = () => {
         <li><Link to="/menu">Our Menu</Link></li>
         <li><Link to="/order/salad">Order Food</Link></li>
         <li><Link to="/secret">Secret</Link></li>
-        <li><Link to="/addItem2">Add Itme</Link></li>
         <li>
             <Link to="/dashboard/mycart">
                 <button className="btn gap-2">

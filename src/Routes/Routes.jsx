@@ -14,7 +14,6 @@ import MyCart from "../pages/Dashboard/MyCart/MyCart";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AddItem from "../pages/Dashboard/AddItem/AddItem";
 import AdminRoute from "./AdminRoute";
-import AddItem2 from "../pages/Dashboard/AddItem2/AddItem2";
 import ManageItems from "../pages/Dashboard/ManageItems/ManageItems";
 
 
@@ -64,10 +63,6 @@ import ManageItems from "../pages/Dashboard/ManageItems/ManageItems";
         {
           path: 'addItem',
           element: <AdminRoute><AddItem></AddItem></AdminRoute> 
-        },
-        {
-          path: 'addItem2',
-          element: <AddItem2></AddItem2>
         },
         {
           path: 'manageItems',
